@@ -1,2 +1,4 @@
-# d3js-meetup
-D3js Meetup Main Repo
+# Boulder/Denver - D3js Meetup Main Repo
+
+Please add a new folder for each project.
+
