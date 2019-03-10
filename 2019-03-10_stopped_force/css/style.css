@@ -1,0 +1,111 @@
+#chart {
+  margin-left: -40px;
+  height: 506px;
+}
+.dot {
+  stroke: #000;
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.label {
+  fill: #777;
+}
+.year.label {
+  font: 500 196px "Helvetica Neue";
+  fill: #ddd;
+}
+.year.label.active {
+  fill: #aaa;
+}
+.overlay {
+  fill: none;
+  pointer-events: all;
+  cursor: ew-resize;
+}
+body { margin:0;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color: #2a2a2a;
+}
+
+.tooltip-text {
+  font: italic 40px serif;
+  fill: red;
+}
+
+div.tooltip {
+  color: white;
+  position: absolute;
+  text-align: left;
+  border-radius: 25px;
+  /*
+  width: 60px;
+  height: 28px;
+  */
+  padding: 10px;
+  font: 20px sans-serif;
+  background: #2B3033;
+  border: 2px solid black;
+  pointer-events: none;
+  display: inline-block;
+}
+
+.grid line {
+  stroke: rgb(166, 166, 164);
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+  stroke-dasharray: 3;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.domain_circ{
+  stroke: #fff;
+  stroke-width: 0.5px;
+}
+
+.axis line{
+  stroke: rgb(166, 166, 164);
+}
+
+.axis path{
+  stroke: rgb(166, 166, 164);
+}
+.axis text{
+  fill: rgb(166, 166, 164);
+  font: 15px sans-serif;
+}
+
+text.axis {
+  fill: rgb(166, 166, 164);
+  font: 15px sans-serif;
+}
+
+.annotation-note-content rect{
+  fill-opacity:0.90;
+  fill: #2B3033;
+}
+
+.annotation-note-content text{
+  color:#bdbdc1;
+}
+.annotation-note-title {
+  font-weight: bold;
+  font: 30px sans-serif;
+}
+.annotation-note-label {
+  fill: rgb(166, 166, 164)
+}
+.emailVolumeLegend circle{
+  fill: none;
+  stroke: #fff;
+  stroke-width:0.50px;
+}
