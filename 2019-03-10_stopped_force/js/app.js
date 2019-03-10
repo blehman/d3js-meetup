@@ -40,9 +40,7 @@
         , 1: 'non-sending'
         , 2: 'defensively-registered'
       }
-      //, url = "https://vizlab.emaildefense.proofpoint.com/customer_progress/get-viz-data?realm_id={realm_id}".replace("{realm_id}",realm_id)
-      , url = "http://127.0.0.1:1203/customer_progress/get-viz-data?realm_id={realm_id}".replace("{realm_id}",realm_id)
-      //, files = ["/static/data/aggregate_details_1421.csv","/static/data/aggregate_details_10476575173.csv", "/static/data/aggregate_details_24991.csv", "/static/data/aggregate_details_10476561953.csv"]
+      , data_path = "data/sample_data.csv"
   layout.yScaleMin = layout.yScaleRange[layout.yScaleRange.length-1]
   layout.yScaleMax = layout.yScaleRange[0]+20
   layout.xAxisLabel = [255,layout.xAxisY+45]
@@ -50,7 +48,7 @@
   run_spinner()
 
   // get data
-  promises = [d3.csv(url)];
+  promises = [d3.csv(data_path)];
 
   function run_spinner(){
     var width = window.innerWidth,
@@ -202,7 +200,7 @@
     // xAxis
     //
     percentFormat = d3.format(".0%")
-    authExtent = d3.extent(details,d=>d.DMARC_pass_ratio)
+    authExtent = d3.extent(details,d=>d.double_pass_ratio)
     xScale = d3.scaleLinear()
       .domain(authExtent)
       .range([0,layout.width]);
@@ -281,7 +279,7 @@
     var simulation = d3.forceSimulation(details)
     .force("x", d3.forceX(function(d) {
       var start  = 5;
-      var xVal = Math.max(start+radiusScale(d.legitimate_messages+1), Math.min(layout.width - radiusScale(d.legitimate_messages+1),  xScale(d.DMARC_pass_ratio)))
+      var xVal = Math.max(start+radiusScale(d.legitimate_messages+1), Math.min(layout.width - radiusScale(d.legitimate_messages+1),  xScale(d.double_pass_ratio)))
       /*
       var xVal = layout.nonSendingXForceStart;
       if (d.legitimate_messages>0) {
