@@ -335,8 +335,8 @@
               + "DMARC Policy: "+ d.policy + '\n'
               + "Authorized Message Volume: "+ (d.legitimate_messages).toLocaleString() + ' \n'
               + "Total Message Volume: "+ (d.total_messages).toLocaleString() + ' \n'
-              + "DMARC Pass Authentication Rate: " + DMARC_pass_ratio + '%' + ' \n'
-              + "Double Pass Authentication Rate: " + double_pass_ratio + '%' + ' \n'
+              + "DMARC Single Pass Authentication Rate: " + DMARC_pass_ratio + '%' + ' \n'
+              + "DMARC Double Pass Authentication Rate: " + double_pass_ratio + '%' + ' \n'
               + "Domain Abuse Rate: " + abuse_ratio + '%';
 
           t1.stop();
@@ -510,6 +510,8 @@
         .style("opacity",0.40)
         .remove()
         */
+      d3.select(".annotation-group")
+        .style("pointer-events",'none')
     }
     function adjacentQuadrant(svgCoords){
       var xZone = (svgCoords[0]<=0)? "neg":"pos"
