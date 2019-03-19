@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
+import { renderLifeCycle } from "./hooks/renderLifecycle";
 import * as d3 from "d3";
 import { Layout, NodeDatum } from "./App";
 
 interface SimulationProps {
-  abuseColorScale: d3.AxisScale<number>;
+  abuseColorScale: d3.ScaleSequential<string>;
   layout: Layout;
   xScale: d3.AxisScale<number>;
   yScale: d3.AxisScale<string>;
@@ -15,8 +16,11 @@ function shorten_string(str: string) {
   return str.replace(/[.]/g, "");
 }
 
+const full_opacity = 1;
+const simiulationRuns = 500;
+
 interface SimulationNodeProps {
-  abuseColorScale: d3.AxisScale<number>;
+  abuseColorScale: d3.ScaleSequential<string>;
   datum: NodeDatum & d3.SimulationNodeDatum;
   radiusScale: d3.AxisScale<number>;
 }
@@ -26,16 +30,27 @@ const SimulationNode = ({
   radiusScale,
   abuseColorScale
 }: SimulationNodeProps) => {
-  // const fill =
-  //   datum.legitimate_messages == 0 && datum.policy == "unknown"
-  //     ? "none"
-  //     : abuseColorScale(datum.abuse_ratio);
+  const circleRef = useRef<SVGCircleElement>(null);
+  renderLifeCycle({
+    firstRender: () => {
+      if (circleRef.current) {
+        d3.select(circleRef.current).datum(datum);
+      }
+    }
+  });
+  const fill =
+    datum.legitimate_messages == 0 && datum.policy == "unknown"
+      ? "none"
+      : abuseColorScale(datum.abuse_ratio);
   const circleProps = {
+    r: radiusScale(datum.legitimate_messages + 1),
+    fill,
     cx: datum.x,
     cy: datum.y,
-    r: radiusScale(datum.legitimate_messages + 1)
+    opacity: full_opacity,
+    className: "inactive domain_circ"
   };
-  return <circle {...circleProps} />;
+  return <circle ref={circleRef} {...circleProps} />;
 };
 
 export default ({
@@ -95,16 +110,22 @@ export default ({
 
   simulation.nodes(details);
 
-  return details.map((d, i) => {
-    return (
-      <SimulationNode
-        key={shorten_string(d.domain)}
-        datum={d}
-        radiusScale={radiusScale}
-        abuseColorScale={abuseColorScale}
-      />
-    );
-  });
+  for (var i = 0; i < simiulationRuns; ++i) simulation.tick();
+
+  return (
+    <g>
+      {details.map((d, i) => {
+        return (
+          <SimulationNode
+            key={shorten_string(d.domain)}
+            datum={d}
+            radiusScale={radiusScale}
+            abuseColorScale={abuseColorScale}
+          />
+        );
+      })}
+    </g>
+  );
   // nodes = viz
   //   .selectAll("#domain")
   //   //.data(sendingDomains)

@@ -5,6 +5,8 @@ import "./App.css";
 import XAxis from "./XAxis";
 import YAxis from "./YAxis";
 import Legend from "./Legend";
+import Simulation from "./Simulation";
+
 const data = require("./data/sample_data.csv");
 const yScaleRange = [400, 300, 200, 100];
 const xAxisY = 500;
@@ -105,6 +107,13 @@ export default () => {
       .domain(["unknown", "monitor", "quarantine", "reject"])
       .range(layout.yScaleRange);
 
+    const abuseExtent = d3.extent(details, (d: any) => d.abuse_ratio) as [
+      string,
+      string
+    ];
+    const abuseColorScale = d3.scaleSequential(d3.interpolateRdBu).clamp(true);
+    abuseColorScale.domain([Number(abuseExtent[1]), Number(abuseExtent[0])]);
+
     const yAxisProps = { layout, scale: yScale };
     const xAxisProps = {
       layout,
@@ -112,7 +121,15 @@ export default () => {
       details,
       clientName: details[0].client_name
     };
-    const legendProps = { details };
+    const legendProps = { details, abuseColorScale };
+    const simulationProps = {
+      details,
+      layout,
+      xScale,
+      yScale,
+      radiusScale,
+      abuseColorScale
+    };
 
     return (
       <div
@@ -135,6 +152,7 @@ export default () => {
                 <Legend {...legendProps} />
                 <YAxis {...yAxisProps} />
                 <XAxis {...xAxisProps} />
+                <Simulation {...simulationProps} />
               </g>
             );
           }}

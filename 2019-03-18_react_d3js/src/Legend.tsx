@@ -8,16 +8,11 @@ const maxRadius = 60;
 
 interface AbuseProps {
   details: any;
+  abuseColorScale: d3.ScaleSequential<string>;
 }
 
-export default ({ details }: AbuseProps) => {
+export default ({ details, abuseColorScale }: AbuseProps) => {
   const gRef = useRef<SVGGElement>(null);
-  const abuseExtent = d3.extent(details, (d: any) => d.abuse_ratio) as [
-    string,
-    string
-  ];
-  const abuseColorScale = d3.scaleSequential(d3.interpolateRdBu).clamp(true);
-  abuseColorScale.domain([Number(abuseExtent[1]), Number(abuseExtent[0])]);
 
   const abuseLegend = legendColor()
     .labelFormat(d3.format("0.0%"))
