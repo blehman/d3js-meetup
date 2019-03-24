@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useContainerSize } from "./hooks/containerSize";
+import { useContainerSize } from "../hooks/containerSize";
 
 interface SVGProps {
   children: (renderProps: { height: number; width: number }) => JSX.Element;

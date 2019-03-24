@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import * as d3 from "d3";
-import { renderLifeCycle } from "./hooks/renderLifecycle";
+import { renderLifeCycle } from "../hooks/renderLifecycle";
 import { Layout } from "./App";
 
 interface XAxisProps {

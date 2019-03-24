@@ -9,6 +9,7 @@
     "@types/react": "16.8.8",
     "@types/react-dom": "16.8.2",
     "d3": "^5.9.2",
+    "d3-svg-annotation": "^2.3.1",
     "d3-svg-legend": "^2.25.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",

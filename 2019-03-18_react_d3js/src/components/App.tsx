@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import * as d3 from "d3";
-import ResizeSVG from "./ResizeSVG";
+import { NodeDatum } from "../types/dataTypes";
+import { mapDetails } from "../data/mapDetails";
 import "./App.css";
+import ResizeSVG from "./ResizeSVG";
 import XAxis from "./XAxis";
 import YAxis from "./YAxis";
 import Legend from "./Legend";
 import Simulation from "./Simulation";
 
-const data = require("./data/sample_data.csv");
+const data = require("../data/sample_data.csv");
 const yScaleRange = [400, 300, 200, 100];
 const xAxisY = 500;
 const layout = {
@@ -31,61 +33,23 @@ const layout = {
   svgFudge: [1500, 2500]
 };
 
-export interface NodeDatum {
-  legitimate_dmarc_fail: number;
-  auth_fail_messages: number;
-  legitimate_messages: number;
-  legitimate_policy_applied: number;
-  suspicious_messages: number;
-  total_messages: number;
-  DMARC_pass_ratio: number;
-  double_pass_ratio: number;
-  policy: string;
-  domain: string;
-  domain_use: string;
-  abuse_ratio: number;
-  client_name: string;
-}
 export type Layout = typeof layout;
 
 const minRadius = 3;
 const maxRadius = 60;
-const full_opacity = 1;
-const simiulationRuns = 500;
 
 export default () => {
   const [details, setData] = useState<NodeDatum[] | null>(null);
+  const [simulationReady, setSimulationReady] = useState<boolean>(false);
 
   if (!details) {
     d3.csv(data).then((data: any) => {
-      const details = data.map((d: any) => {
-        // client_name = d.account_name;
-        return {
-          legitimate_dmarc_fail: +d.legitimate_dmarc_fail,
-          auth_fail_messages: +d.auth_fail_messages,
-          legitimate_messages: +d.legitimate_messages,
-          legitimate_policy_applied: +d.legitimate_policy_applied,
-          suspicious_messages: +d.suspicious_messages,
-          total_messages: +d.total_messages,
-          DMARC_pass_ratio: +d.DMARC_pass_ratio,
-          double_pass_ratio: +d.double_pass_ratio,
-          policy: d.policy,
-          domain: d.domain,
-          domain_use: d.domain_use,
-          abuse_ratio:
-            +d.total_messages > 0
-              ? +d.suspicious_messages / +d.total_messages
-              : 0,
-          client_name: d.account_name
-        };
-      });
+      const details = data.map(mapDetails);
       setData(details);
     });
   }
 
   if (details) {
-    const nonSendingDomains = details.filter(d => d.legitimate_messages == 0);
-    const sendingDomains = details.filter(d => d.legitimate_messages > 0);
     const radiusExtent = d3.extent(details, d => d.legitimate_messages);
     const radiusScale = d3
       .scaleLinear()
@@ -128,7 +92,8 @@ export default () => {
       xScale,
       yScale,
       radiusScale,
-      abuseColorScale
+      abuseColorScale,
+      onSimulationReady: setSimulationReady
     };
 
     return (
@@ -138,6 +103,12 @@ export default () => {
           width: `${layout.width + layout.svgFudge[0]}px`
         }}
       >
+        <h1
+          className="loading"
+          style={{ display: simulationReady ? "none" : "null" }}
+        >
+          LOADING...
+        </h1>
         <ResizeSVG
           margin={{
             left: layout.vizStartX,
@@ -161,5 +132,5 @@ export default () => {
     );
   }
 
-  return <h1>LOADING...</h1>;
+  return <h1 className="loading">LOADING...</h1>;
 };

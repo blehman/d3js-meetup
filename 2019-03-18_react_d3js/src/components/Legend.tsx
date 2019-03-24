@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import * as d3 from "d3";
 import { legendColor, legendSize } from "d3-svg-legend";
-import { renderLifeCycle } from "./hooks/renderLifecycle";
+import { renderLifeCycle } from "../hooks/renderLifecycle";
 
 const minRadius = 3;
 const maxRadius = 60;
