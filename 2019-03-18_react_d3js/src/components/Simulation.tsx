@@ -18,7 +18,7 @@ interface SimulationProps {
   xScale: d3.AxisScale<number>;
   yScale: d3.AxisScale<string>;
   radiusScale: d3.AxisScale<number>;
-  details: (NodeDatum & d3.SimulationNodeDatum)[];
+  data: (NodeDatum & d3.SimulationNodeDatum)[];
   onSimulationReady: (ready: boolean) => void;
 }
 
@@ -67,7 +67,7 @@ const createSimulation = ({
 
 export default (props: SimulationProps) => {
   const {
-    details,
+    data,
     radiusScale,
     abuseColorScale,
     layout,
@@ -80,7 +80,7 @@ export default (props: SimulationProps) => {
 
   if (!simulation) {
     const simulation = createSimulation(props);
-    simulation.nodes(details);
+    simulation.nodes(data);
     for (let i = 0; i < simulationRuns; ++i) simulation.tick();
     setSimulation(simulation);
     onSimulationReady(true);
@@ -94,7 +94,7 @@ export default (props: SimulationProps) => {
 
   return (
     <g>
-      {details.map(d => {
+      {data.map(d => {
         const simulationNodeProps = {
           datum: d,
           radiusScale: radiusScale,

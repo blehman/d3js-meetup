@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import * as d3 from "d3";
+import {
+  csv,
+  extent,
+  scaleLinear,
+  scaleSequential,
+  scaleOrdinal,
+  interpolateRdBu
+} from "d3";
 import { NodeDatum } from "../types/dataTypes";
 import { mapDetails } from "../data/mapDetails";
 import "./App.css";
@@ -43,39 +50,33 @@ export default () => {
   const [simulationReady, setSimulationReady] = useState<boolean>(false);
 
   if (!details) {
-    d3.csv(data).then((data: any) => {
+    csv(data).then((data: any) => {
       const details = data.map(mapDetails);
       setData(details);
     });
   }
 
   if (details) {
-    const radiusExtent = d3.extent(details, d => d.legitimate_messages);
-    const radiusScale = d3
-      .scaleLinear()
+    const radiusExtent = extent(details, d => d.legitimate_messages);
+    const radiusScale = scaleLinear()
       .domain([0, radiusExtent[1] as number])
       .range([minRadius, maxRadius]);
 
-    const authExtent: any[] = d3.extent(
-      details,
-      (d: any) => d.double_pass_ratio
-    );
+    const authExtent: any[] = extent(details, (d: any) => d.double_pass_ratio);
 
-    const xScale = d3
-      .scaleLinear()
+    const xScale = scaleLinear()
       .domain(authExtent)
       .range([0, layout.width]);
 
-    const yScale = d3
-      .scaleOrdinal<number>()
+    const yScale = scaleOrdinal<number>()
       .domain(["unknown", "monitor", "quarantine", "reject"])
       .range(layout.yScaleRange);
 
-    const abuseExtent = d3.extent(details, (d: any) => d.abuse_ratio) as [
+    const abuseExtent = extent(details, (d: any) => d.abuse_ratio) as [
       string,
       string
     ];
-    const abuseColorScale = d3.scaleSequential(d3.interpolateRdBu).clamp(true);
+    const abuseColorScale = scaleSequential(interpolateRdBu).clamp(true);
     abuseColorScale.domain([Number(abuseExtent[1]), Number(abuseExtent[0])]);
 
     const yAxisProps = { layout, scale: yScale };
@@ -87,7 +88,7 @@ export default () => {
     };
     const legendProps = { details, abuseColorScale };
     const simulationProps = {
-      details,
+      data: details,
       layout,
       xScale,
       yScale,

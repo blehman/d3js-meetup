@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
-import * as d3 from "d3";
+import { AxisScale, ScaleSequential, SimulationNodeDatum, select } from "d3";
 import { renderLifeCycle } from "../hooks/renderLifecycle";
 import { NodeDatum } from "../types/dataTypes";
 
 const full_opacity = 1;
 
 interface SimulationNodeProps {
-  abuseColorScale: d3.ScaleSequential<string>;
-  datum: NodeDatum & d3.SimulationNodeDatum;
-  radiusScale: d3.AxisScale<number>;
+  abuseColorScale: ScaleSequential<string>;
+  datum: NodeDatum & SimulationNodeDatum;
+  radiusScale: AxisScale<number>;
   setAnnotationDatum: (datum: NodeDatum | null) => void;
 }
 
@@ -24,7 +24,7 @@ export default ({
   renderLifeCycle({
     firstRender: () => {
       if (circleRef.current) {
-        d3.select(circleRef.current).datum(datum);
+        select(circleRef.current).datum(datum);
       }
     }
   });
@@ -33,6 +33,7 @@ export default ({
     datum.legitimate_messages == 0 && datum.policy == "unknown"
       ? "none"
       : abuseColorScale(datum.abuse_ratio);
+
   const circleProps = {
     r: radiusScale(datum.legitimate_messages + 1),
     fill,

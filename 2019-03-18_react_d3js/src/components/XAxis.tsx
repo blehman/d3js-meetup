@@ -10,7 +10,7 @@ interface XAxisProps {
   scale: d3.AxisScale<any>;
 }
 
-export default ({ details, layout, clientName, scale }: XAxisProps) => {
+export default ({ layout, clientName, scale }: XAxisProps) => {
   const gRef = useRef<SVGGElement>(null);
   const percentFormat = d3.format(".0%");
 
@@ -22,19 +22,18 @@ export default ({ details, layout, clientName, scale }: XAxisProps) => {
   renderLifeCycle({
     firstRender: () => {
       if (gRef.current) {
-        d3.select(gRef.current)
-          .attr(
-            "transform",
-            "translate(" + layout.xAxisX1 + "," + layout.xAxisY + ")"
-          )
-          .call(xAxis);
+        d3.select(gRef.current).call(xAxis);
       }
     }
   });
 
   return (
     <g>
-      <g ref={gRef} className="x-axis axis" />
+      <g
+        ref={gRef}
+        className="x-axis axis"
+        transform={`translate(${layout.xAxisX1},${layout.xAxisY})`}
+      />
       <text
         transform={
           "translate(" + layout.xAxisLabel[0] + "," + layout.xAxisLabel[1] + ")"
