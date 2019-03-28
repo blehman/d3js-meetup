@@ -1,7 +1,6 @@
 (function() {
 
-  var client = "utc" // utc reynolds usaa
-      , svg
+  var svg
       , xAxis
       , yAxis
       , xScale
@@ -218,32 +217,20 @@
       .classed("x-axis axis",true)
       .attr("transform", "translate("+layout.xAxisX1+","+layout.xAxisY+")")
       .call(xAxis);
-/*
-    viz.append("g")
-      .classed("x-axis axis",true)
-      .attr("transform", "translate("+layout.xAxisX2+","+layout.xAxisY+")")
-      .call(xAxis2);
 
-    viz.append("text")
-      .classed("axis",true)
-      .attr("transform", "translate("+layout.heading2[0]+","+layout.heading2[1]+")")
-      .style("text-anchor", "middle")
-      .style("font","20px sans-serif")
-      .text("Non-Sending Domain Progress");
-*/
     viz.append("text")
       .classed("axis",true)
       .attr("transform", "translate("+layout.xAxisLabel[0]+","+layout.xAxisLabel[1]+")")
       .style("text-anchor", "middle")
       //.style("font","20px sans-serif")
-      .text("Percentage of Legitimate Email Authenticating");
+      .text("Percentage");
 
     viz.append("text")
       .classed("axis",true)
       .attr("transform", "translate("+layout.heading1[0]+","+layout.heading1[1]+")")
       .style("text-anchor", "middle")
       .style("font","20px sans-serif")
-      .text("{client_name}: Domain Progress".replace("{client_name}",client_name));
+      .text("Type Progress");
     //
     // yAxis
     //
@@ -252,7 +239,7 @@
       .range(layout.yScaleRange);
 
     yAxis = d3.axisLeft(yScale)
-      .tickValues(["no record", "monitor", "quarantine", "reject"]);
+      .tickValues(["type 1", "type 2", "type 3", "type 4"]);
 
     viz.append("g")
       .classed("y-axis axis",true)
@@ -424,7 +411,7 @@
 
       var abuseLegendText = viz.select(".abuseLegend")
         .append("text")
-        .text("abuse ratio")
+        .text("ratio")
         .classed("axis",true)
         .attr("x",-10)
         .attr("y",-10)
@@ -447,14 +434,14 @@
 
       var emailVolumeLegendText = viz.select(".emailVolumeLegend")
         .append("text")
-        .text("legitmate email volume")
+        .text("volume")
         .classed("axis",true)
         .attr("x",-10)
         .attr("y",-10)
         .attr("opacity",0.89)
 
       var emailVolumeLegend = d3.legendSize()
-        .labelFormat(d3.format(","))
+        .labelFormat(d3.format(".2s"))
         .scale(radiusScale)
         .shape('circle')
         .shapePadding(35)
@@ -523,12 +510,7 @@
           , "neg-pos":"III"
           , "pos-pos":"IV"
         }
-    /* Quadrants:
-          "I": 3*Math.PI/12
-        , "II": 9*Math.PI/12
-        , "III": 15*Math.PI/12
-        , "IV": 21*Math.PI/12
-    */
+
         , adjacentRad = {
               "I": 15*Math.PI/12
             , "II": 21*Math.PI/12
