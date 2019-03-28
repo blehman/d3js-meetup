@@ -31,7 +31,8 @@ export default ({ details, abuseColorScale }: AbuseProps) => {
     .range([minRadius, maxRadius]);
 
   const emailVolumeLegend = legendSize()
-    .labelFormat(d3.format(","))
+    .labelFormat(d3.format(".2s"))
+    // .labelFormat(d3.format(","))
     .shape("circle")
     .shapePadding(35)
     .labelOffset(20)
@@ -62,12 +63,12 @@ export default ({ details, abuseColorScale }: AbuseProps) => {
     <g ref={gRef}>
       <g className="abuseLegend" transform="translate(615,320)">
         <text className="axis" {...textAttrs}>
-          abuse ratio
+          ratio
         </text>
       </g>
       <g className="emailVolumeLegend" transform="translate(620,130)">
         <text className="axis" {...textAttrs}>
-          legitmate email volume
+          volume
         </text>
       </g>
     </g>

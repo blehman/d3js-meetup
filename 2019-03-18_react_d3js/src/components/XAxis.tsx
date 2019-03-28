@@ -41,7 +41,7 @@ export default ({ layout, clientName, scale }: XAxisProps) => {
         textAnchor="middle"
         className="axis"
       >
-        Percentage of Legitimate Email Authenticating
+        Percentage
       </text>
       <text
         style={{ font: "20px sans-serif" }}
@@ -51,7 +51,7 @@ export default ({ layout, clientName, scale }: XAxisProps) => {
         textAnchor="middle"
         className="axis"
       >
-        {clientName}: Domain Progress
+        Type of Percent
       </text>
     </g>
   );

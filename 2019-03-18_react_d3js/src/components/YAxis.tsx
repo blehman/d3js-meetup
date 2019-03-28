@@ -13,7 +13,7 @@ export default ({ layout, scale }: XAxisProps) => {
 
   const yAxis = d3
     .axisLeft(scale)
-    .tickValues(["no record", "monitor", "quarantine", "reject"]);
+    .tickValues(["type 1", "type 2", "type 3", "type 4"]);
 
   const gridLines = d3
     .axisLeft(scale)
